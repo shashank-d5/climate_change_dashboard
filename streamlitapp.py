@@ -46,13 +46,9 @@ def remove_outliers(df, column):
     IQR = Q3 - Q1
     lbound = Q1 - 1.5 * IQR
     ubound = Q3 + 1.5 * IQR
-    
-    # Ensure bounds are integers for integer-type columns
     if df[column].dtype == 'Int64':
         lbound = int(np.floor(lbound))
         ubound = int(np.ceil(ubound))
-    
-    # Replace outliers with bounds
     df.loc[df[column] < lbound, column] = lbound
     df.loc[df[column] > ubound, column] = ubound
     return df
@@ -60,7 +56,6 @@ def remove_outliers(df, column):
 for column in df.select_dtypes(include=[np.float64, 'Int64']).columns:
     df = remove_outliers(df, column)
 
-# Streamlit app
 st.title("Climate Change Data Dashboard")
 
 # Year range selection
@@ -71,10 +66,6 @@ year_range = st.slider(
     value=(int(df['Year'].min()), int(df['Year'].max()))
 )
 filtered_df = df[df['Year'].between(year_range[0], year_range[1])]
-
-# Debug: Print filtered dataset info
-st.write("Filtered dataset shape:", filtered_df.shape)
-st.write("Missing values in filtered dataset:", filtered_df.isnull().sum())
 
 # Button to trigger model training and predictions
 if st.button("Train Model and Generate Predictions"):
@@ -106,10 +97,6 @@ if st.button("Train Model and Generate Predictions"):
             # Model training and predictions
             X = filtered_df[['CO2_Concentration (ppm)', 'Solar_Irradiance (W/m²)', 'ENSO_Index', 'Precipitation (mm)', 'Humidity (%)']]
             y = filtered_df['Sea_Surface_Temp (°C)']
-
-            # Debug: Print shapes of X and y
-            st.write("X shape:", X.shape)
-            st.write("y shape:", y.shape)
 
             if not X.empty and not y.empty:
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
