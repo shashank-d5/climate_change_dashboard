@@ -8,7 +8,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 import plotly.graph_objects as go
 
 # Load the dataset
-df = pd.read_csv(r'C:\Users\home\Downloads\climate_change_dataset.csv')
+df = pd.read_csv(r'https://drive.google.com/file/d/1ouidvn7aisQhRT_Wmf-xlgixMPAGK7J3/view?usp=drive_link')
 
 # Data preprocessing
 df['Year'] = pd.to_numeric(df['Year'], errors='coerce').astype('Int64')
